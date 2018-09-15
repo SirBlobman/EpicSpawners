@@ -1,6 +1,5 @@
 package com.songoda.epicspawners.spawners.spawner;
 
-import com.google.common.base.Preconditions;
 import com.songoda.epicspawners.api.EpicSpawnersAPI;
 import com.songoda.epicspawners.api.particles.ParticleDensity;
 import com.songoda.epicspawners.api.particles.ParticleEffect;
@@ -56,10 +55,10 @@ public class ESpawnerData implements SpawnerData {
     private List<SpawnCondition> spawnConditions = new ArrayList<>();
 
     public ESpawnerData(int uuid, String name, List<EntityType> entities, List<Material> blocks, List<ItemStack> items, List<ItemStack> itemDrops, List<String> commands) {
-        Preconditions.checkNotNull(name, "Name cannot be null");
 
         this.uuid = uuid == 0 ? (new Random()).nextInt(9999) : uuid;
         this.name = name;
+        if (name == null) return;
         this.displayName = name;
 
         this.entities = entities;

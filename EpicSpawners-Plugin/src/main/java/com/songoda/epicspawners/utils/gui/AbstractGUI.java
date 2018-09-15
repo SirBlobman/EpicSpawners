@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.google.common.base.Preconditions;
 import com.songoda.epicspawners.utils.Range;
 
 import org.bukkit.Bukkit;
@@ -88,7 +87,7 @@ public abstract class AbstractGUI implements GUI {
 
     @Override
     public final void openFor(Player player) {
-        Preconditions.checkNotNull(player, "Cannot open inventory for null player");
+        if (player == null) return;
 
         if (!initialized) {
             this.init();
@@ -120,8 +119,7 @@ public abstract class AbstractGUI implements GUI {
      * @param action the action to register
      */
     protected final void registerClickableObject(int slot, Clickable action) {
-        Preconditions.checkArgument(slot >= 0 || slot < inventory.getSize(), "Action slots must be between 0 and %s", inventory.getSize());
-        Preconditions.checkNotNull(action, "Cannot reigster a null action");
+        if (action == null) return;
 
         this.clickActions[slot] = action;
     }
@@ -138,10 +136,7 @@ public abstract class AbstractGUI implements GUI {
      * @param action the action to register
      */
     protected final void registerClickableRange(int from, int to, Clickable action) {
-        Preconditions.checkArgument(from >= 0 && from < inventory.getSize(), "Action slots must be between 0 and %s", inventory.getSize());
-        Preconditions.checkArgument(to >= 0 && to < inventory.getSize(), "Action slots must be between 0 and %s", inventory.getSize());
-        Preconditions.checkArgument(from < to, "From must be less than to");
-        Preconditions.checkNotNull(action, "Cannot register a null action");
+        if (action == null) return;
 
         for (Range range : rangedClickActions.keySet()) {
             if (range.isWithin(from) || range.isWithin(to)) {
@@ -162,7 +157,6 @@ public abstract class AbstractGUI implements GUI {
      * @param slot the slot to remove the action from
      */
     protected final void removeActionFrom(int slot) {
-        Preconditions.checkArgument(slot >= 0 || slot < inventory.getSize(), "Cannot remove action from invalid slot. Must be between 0 and %s", inventory.getSize());
         this.clickActions[slot] = null;
     }
 
@@ -173,8 +167,6 @@ public abstract class AbstractGUI implements GUI {
      * @return true if successful, false if no changes were made
      */
     protected final boolean removeRangedActionForSlot(int slot) {
-        Preconditions.checkArgument(slot >= 0 || slot < inventory.getSize(), "Cannot remove action from invalid slot. Must be between 0 and %s", inventory.getSize());
-
         Iterator<Range> ranges = rangedClickActions.keySet().iterator();
         while (ranges.hasNext()) {
             Range range = ranges.next();
@@ -215,20 +207,13 @@ public abstract class AbstractGUI implements GUI {
     protected void onGUIClose(Player player) { }
 
     private void init() {
-        Preconditions.checkArgument(listenersInitialized, "The GUI class has not yet been initialized. Invoke GUI#initializeListeners(JavaPlugin)");
-        Preconditions.checkArgument(!initialized, "This GUI has already been initialized");
-
         this.initInventoryItems(inventory);
         this.initClickableObjects();
         this.initialized = true;
     }
 
     private boolean invokeClickAction(Player player, Inventory inventory, ItemStack cursor, int slot, ClickType type) {
-        Preconditions.checkNotNull(player, "A null player cannot click the inventory");
-        Preconditions.checkNotNull(inventory, "A null inventory cannot be clicked");
-        Preconditions.checkArgument(slot >= 0 && slot < inventory.getSize(), "The slot exceeds the size limitations of the inventory (0 - %s)", inventory.getSize());
-        Preconditions.checkNotNull(type, "A null click type cannot be performed");
-
+        if (player == null || inventory == null || type == null) return false;
         Clickable action = clickActions[slot];
         if (action == null) {
             for (Entry<Range, Clickable> rangedAction : rangedClickActions.entrySet()) {

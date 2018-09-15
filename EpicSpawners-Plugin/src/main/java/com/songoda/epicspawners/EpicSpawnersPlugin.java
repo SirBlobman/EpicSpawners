@@ -1,6 +1,5 @@
 package com.songoda.epicspawners;
 
-import com.google.common.base.Preconditions;
 import com.songoda.arconix.api.methods.Maths;
 import com.songoda.arconix.api.methods.formatting.TextComponent;
 import com.songoda.arconix.api.methods.serialize.Serialize;
@@ -751,7 +750,6 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
 
     @Override
     public ItemStack newSpawnerItem(SpawnerData data, int amount, int stackSize) {
-        Preconditions.checkArgument(stackSize > 0, "Stack size must be greater than or equal to 0");
 
         ItemStack item = new ItemStack(Material.MOB_SPAWNER, amount);
         ItemMeta meta = item.getItemMeta();
@@ -805,8 +803,7 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
 
     @Override
     public int getStackSizeFromItem(ItemStack item) {
-        Preconditions.checkNotNull(item, "Cannot get stack size of null item");
-        if (!item.hasItemMeta()) return 1;
+        if (item == null || !item.hasItemMeta()) return 1;
 
         String name = item.getItemMeta().getDisplayName();
         if (name == null || !name.contains(":")) return 1;
@@ -817,8 +814,7 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
 
     @Override
     public void registerProtectionHook(ProtectionPluginHook hook) {
-        Preconditions.checkNotNull(hook, "Cannot register null hook");
-        Preconditions.checkNotNull(hook.getPlugin(), "Protection plugin hook returns null plugin instance (#getPlugin())");
+        if (hook != null && hook.getPlugin() != null) return;
 
         JavaPlugin hookPlugin = hook.getPlugin();
         for (ProtectionPluginHook existingHook : protectionHooks) {
