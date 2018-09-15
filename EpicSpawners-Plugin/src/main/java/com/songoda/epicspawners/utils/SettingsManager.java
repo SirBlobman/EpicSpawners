@@ -123,7 +123,7 @@ public class SettingsManager implements Listener {
 
         int slot = 10;
         for (String key : instance.getConfig().getDefaultSection().getKeys(false)) {
-            ItemStack item = new ItemStack(Material.WHITE_WOOL, 1, (byte) (slot - 9)); //ToDo: Make this function as it was meant to.
+            ItemStack item = new ItemStack(Material.WOOL, 1, (byte) (slot - 9)); //ToDo: Make this function as it was meant to.
             ItemMeta meta = item.getItemMeta();
             meta.setLore(Collections.singletonList(TextComponent.formatText("&6Click To Edit This Category.")));
             meta.setDisplayName(TextComponent.formatText("&f&l" + key));
@@ -154,7 +154,7 @@ public class SettingsManager implements Listener {
                 item.setType(Material.PAPER);
                 lore.add(TextComponent.formatText("&9" + config.getString(fKey)));
             } else if (config.isInt(fKey)) {
-                item.setType(Material.CLOCK);
+                item.setType(Material.WATCH);
                 lore.add(TextComponent.formatText("&5" + config.getInt(fKey)));
             }
 
@@ -185,6 +185,8 @@ public class SettingsManager implements Listener {
             if (config.contains("settings." + setting.oldSetting)) {
                 config.addDefault(setting.setting, instance.getConfig().get("settings." + setting.oldSetting));
                 config.set("settings." + setting.oldSetting, null);
+            } else if (setting.setting.equals("Main.Upgrade Particle Type")) {
+                config.addDefault(setting.setting, instance.isServerVersion(ServerVersion.V1_7, ServerVersion.V1_8) ? "WITCH_MAGIC" : setting.option);
             } else {
                 config.addDefault(setting.setting, setting.option);
             }
@@ -252,10 +254,10 @@ public class SettingsManager implements Listener {
         SILKTOUCH_NATURAL_SPAWNER_DROP_CHANCE("Silktouch-natural-drop-chance", "Spawner Drops.Chance On Natural Silktouch", "100%"),
         SILKTOUCH_PLACED_SPAWNER_DROP_CHANCE("Silktouch-placed-drop-chance", "Spawner Drops.Chance On Placed Silktouch", "100%"),
 
-        EXIT_ICON("Exit-Icon", "Interfaces.Exit Icon", "OAK_DOOR"),
+        EXIT_ICON("Exit-Icon", "Interfaces.Exit Icon", "WOOD_DOOR"),
         BUY_ICON("Buy-Icon", "Interfaces.Buy Icon", "EMERALD"),
-        ECO_ICON("ECO-Icon", "Interfaces.Economy Icon", "SUNFLOWER"),
-        XP_ICON("XP-Icon", "Interfaces.XP Icon", "EXPERIENCE_BOTTLE"),
+        ECO_ICON("ECO-Icon", "Interfaces.Economy Icon", "DOUBLE_PLANT"),
+        XP_ICON("XP-Icon", "Interfaces.XP Icon", "EXP_BOTTLE"),
         GLASS_TYPE_1("Glass-Type-1", "Interfaces.Glass Type 1", 7),
         GLASS_TYPE_2("Glass-Type-2", "Interfaces.Glass Type 2", 11),
         GLASS_TYPE_3("Glass-Type-3", "Interfaces.Glass Type 3", 3),

@@ -39,11 +39,9 @@ import com.songoda.epicspawners.spawners.spawner.ESpawnerManager;
 import com.songoda.epicspawners.spawners.spawner.ESpawnerStack;
 import com.songoda.epicspawners.tasks.SpawnerParticleTask;
 import com.songoda.epicspawners.tasks.SpawnerSpawnTask;
-import com.songoda.epicspawners.utils.ESpawnerDataBuilder;
-import com.songoda.epicspawners.utils.Heads;
-import com.songoda.epicspawners.utils.Methods;
-import com.songoda.epicspawners.utils.SettingsManager;
+import com.songoda.epicspawners.utils.*;
 import com.songoda.epicspawners.utils.gui.AbstractGUI;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -99,25 +97,27 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
     private List<ProtectionPluginHook> protectionHooks = new ArrayList<>();
     private ClaimableProtectionPluginHook factionsHook, townyHook, aSkyblockHook, uSkyblockHook;
 
+    private ServerVersion serverVersion = ServerVersion.fromPackageName(Bukkit.getServer().getClass().getPackage().getName());
+
     public static EpicSpawnersPlugin getInstance() {
         return INSTANCE;
     }
 
     private boolean checkVersion() {
-        int workingVersion = 13;
-        int currentVersion = Integer.parseInt(Bukkit.getServer().getClass()
-                .getPackage().getName().split("\\.")[3].split("_")[1]);
+        int maxVersion = 122; // also supports 1.8 and higher
+        int currentVersion = Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].split("_")[1]);
 
-        if (currentVersion < workingVersion) {
+        if (currentVersion > maxVersion) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
                 Bukkit.getConsoleSender().sendMessage("");
-                Bukkit.getConsoleSender().sendMessage(String.format("%sYou installed the 1.%s only version of %s on a 1.%s server. Since you are on the wrong version we disabled the plugin for you. Please install correct version to continue using %s.", ChatColor.RED, workingVersion, this.getDescription().getName(), currentVersion, this.getDescription().getName()));
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "You installed the legacy (1.8 - 1.12) only version of " + this.getDescription().getName() + " on a 1." + currentVersion + " server. Since you are on the wrong version we disabled the plugin for you. Please install correct version to continue using " + this.getDescription().getName() + ".");
                 Bukkit.getConsoleSender().sendMessage("");
             }, 20L);
             return false;
         }
         return true;
     }
+
 
     @Override
     public void onEnable() {
@@ -171,8 +171,8 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
                 for (String key : currentSection.getKeys(false)) {
                     Location location = Serialize.getInstance().unserializeLocation(key);
 
-                    if (location.getWorld() == null || location.getBlock().getType() != Material.SPAWNER) {
-                        if (location.getWorld() != null && location.getBlock().getType() != Material.SPAWNER) {
+                    if (location.getWorld() == null || location.getBlock().getType() != Material.MOB_SPAWNER) {
+                        if (location.getWorld() != null && location.getBlock().getType() != Material.MOB_SPAWNER) {
                             this.hologramHandler.despawn(location.getBlock());
                         }
                         continue;
@@ -508,6 +508,21 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
         return strings.toArray(new String[strings.size()]);
     }
 
+    public ServerVersion getServerVersion() {
+        return serverVersion;
+    }
+
+    public boolean isServerVersion(ServerVersion version) {
+        return serverVersion == version;
+    }
+    public boolean isServerVersion(ServerVersion... versions) {
+        return ArrayUtils.contains(versions, serverVersion);
+    }
+
+    public boolean isServerVersionAtLeast(ServerVersion version) {
+        return serverVersion.ordinal() >= version.ordinal();
+    }
+
     private void setupConfig() {
         this.settingsManager.updateSettings();
         this.getConfig().options().copyDefaults(true);
@@ -549,7 +564,7 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
         if (value.equalsIgnoreCase("pig") || value.equalsIgnoreCase("sheep") || value.equalsIgnoreCase("chicken") ||
                 value.equalsIgnoreCase("cow") || value.equalsIgnoreCase("rabbit") || value.equalsIgnoreCase("llamma") ||
                 value.equalsIgnoreCase("horse") || value.equalsIgnoreCase("OCELOT")) {
-            spawnBlock = "GRASS_BLOCK";
+            spawnBlock = "GRASS";
         }
 
         if (value.equalsIgnoreCase("MUSHROOM_COW")) {
@@ -605,7 +620,7 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
 
 
         if (entityType == EntityType.SLIME) {
-            spawnerConfig.addDefault("Entities." + type + ".Conditions.Biomes", Biome.SWAMP);
+            spawnerConfig.addDefault("Entities." + type + ".Conditions.Biomes", Biome.SWAMPLAND);
             spawnerConfig.addDefault("Entities." + type + ".Conditions.Height", "50:70");
         } else {
             spawnerConfig.addDefault("Entities." + type + ".Conditions.Biomes", "ALL");
@@ -738,7 +753,7 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
     public ItemStack newSpawnerItem(SpawnerData data, int amount, int stackSize) {
         Preconditions.checkArgument(stackSize > 0, "Stack size must be greater than or equal to 0");
 
-        ItemStack item = new ItemStack(Material.SPAWNER, amount);
+        ItemStack item = new ItemStack(Material.MOB_SPAWNER, amount);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(Methods.compileName(data, stackSize, true));
         item.setItemMeta(meta);

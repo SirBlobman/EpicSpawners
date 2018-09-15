@@ -66,14 +66,14 @@ public class GUISpawnerOverview extends AbstractGUI {
         else if (showAmt == 0)
             showAmt = 1;
 
-        ItemStack item = new ItemStack(Material.PLAYER_HEAD, showAmt, (byte) 3);
+        ItemStack item = new ItemStack(Material.SKULL_ITEM, showAmt, (byte) 3);
         if (spawner.getSpawnerStacks().size() != 1) {
             item = plugin.getHeads().addTexture(item, plugin.getSpawnerManager().getSpawnerData("omni"));
         } else {
             try {
                 item = plugin.getHeads().addTexture(item, spawnerData);
             } catch (Exception e) {
-                item = new ItemStack(Material.SPAWNER, showAmt);
+                item = new ItemStack(Material.MOB_SPAWNER, showAmt);
             }
         }
 

@@ -64,7 +64,7 @@ public class BlockListeners implements Listener {
                             b2.setType(Material.AIR);
                         }
                     } else {
-                        if (b2.getType().equals(Material.SPAWNER)) {
+                        if (b2.getType().equals(Material.MOB_SPAWNER)) {
                             return true;
                         }
                     }
@@ -100,7 +100,7 @@ public class BlockListeners implements Listener {
     public void onSpawnerPlace(BlockPlaceEvent event) {
         //We are ignoring canceled inside the event so that it will still remove holograms when the event is canceled.
         if (!event.isCancelled()) {
-            if (event.getBlock().getType() != Material.SPAWNER) return;
+            if (event.getBlock().getType() != Material.MOB_SPAWNER) return;
 
             Location location = event.getBlock().getLocation();
             ESpawner spawner = new ESpawner(event.getBlock().getLocation());
@@ -170,7 +170,7 @@ public class BlockListeners implements Listener {
 
             Player player = event.getPlayer();
 
-            if (event.getBlock().getType() != Material.SPAWNER) return;
+            if (event.getBlock().getType() != Material.MOB_SPAWNER) return;
 
             if (instance.getBlacklistHandler().isBlacklisted(event.getPlayer(), true)) {
                 event.setCancelled(true);

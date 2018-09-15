@@ -8,6 +8,7 @@ import com.songoda.epicspawners.player.MenuType;
 import com.songoda.epicspawners.player.PlayerData;
 import com.songoda.epicspawners.utils.Debugger;
 import com.songoda.epicspawners.utils.Methods;
+import com.songoda.epicspawners.utils.ServerVersion;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -75,7 +76,7 @@ public class Shop {
             for (SpawnerData spawnerData : entities) {
                 if (place == 17 || place == (max22 - 18)) place++;
 
-                ItemStack it = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+                ItemStack it = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
                 ItemStack item = instance.getHeads().addTexture(it, spawnerData);
 
                 if (spawnerData.getDisplayItem() != null) {
@@ -91,7 +92,9 @@ public class Shop {
                 lore.add(TextComponent.formatText(instance.getLocale().getMessage("interface.shop.buyprice", TextComponent.formatEconomy(price))));
                 String loreString = instance.getLocale().getMessage("interface.shop.lore", Methods.getTypeFromString(Methods.getTypeFromString(spawnerData.getDisplayName())));
                 if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-                    loreString = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, loreString.replace(" ", "_")).replace("_", " ");
+                    if (EpicSpawnersPlugin.getInstance().isServerVersionAtLeast(ServerVersion.V1_12)) {
+                        loreString = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, loreString.replace(" ", "_")).replace("_", " ");
+                    }
                 }
                 lore.add(loreString);
                 itemmeta.setLore(lore);
@@ -119,14 +122,14 @@ public class Shop {
             exitmeta.setDisplayName(instance.getLocale().getMessage("general.nametag.exit"));
             exit.setItemMeta(exitmeta);
 
-            ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemStack skull = Arconix.pl().getApi().getGUI().addTexture(head, "http://textures.minecraft.net/texture/1b6f1a25b6bc199946472aedb370522584ff6f4e83221e5946bd2e41b5ca13b");
             SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
             skull.setDurability((short) 3);
             skullMeta.setDisplayName(instance.getLocale().getMessage("general.nametag.next"));
             skull.setItemMeta(skullMeta);
 
-            ItemStack head2 = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack head2 = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemStack skull2 = Arconix.pl().getApi().getGUI().addTexture(head2, "http://textures.minecraft.net/texture/3ebf907494a935e955bfcadab81beafb90fb9be49c7026ba97d798d5f1a23");
             SkullMeta skull2Meta = (SkullMeta) skull2.getItemMeta();
             skull2.setDurability((short) 3);
@@ -207,7 +210,7 @@ public class Shop {
 
             double price = spawnerData.getShopPrice() * amt;
 
-            ItemStack it = new ItemStack(Material.PLAYER_HEAD, amt, (byte) 3);
+            ItemStack it = new ItemStack(Material.SKULL_ITEM, amt, (byte) 3);
 
             ItemStack item = EpicSpawnersPlugin.getInstance().getHeads().addTexture(it, spawnerData);
 
@@ -229,7 +232,7 @@ public class Shop {
             inventory.setItem(22, item);
 
 
-            ItemStack plus = new ItemStack(Material.LIME_STAINED_GLASS_PANE, 1, (short) 5);
+            ItemStack plus = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
             ItemMeta plusmeta = plus.getItemMeta();
             plusmeta.setDisplayName(instance.getLocale().getMessage("interface.shop.add1"));
             plus.setItemMeta(plusmeta);
@@ -237,21 +240,21 @@ public class Shop {
                 inventory.setItem(15, plus);
             }
 
-            plus = new ItemStack(Material.LIME_STAINED_GLASS_PANE, 10, (short) 5);
+            plus = new ItemStack(Material.STAINED_GLASS_PANE, 10, (short) 5);
             plusmeta.setDisplayName(instance.getLocale().getMessage("interface.shop.add10"));
             plus.setItemMeta(plusmeta);
             if (item.getAmount() + 10 <= 64) {
                 inventory.setItem(33, plus);
             }
 
-            plus = new ItemStack(Material.LIME_STAINED_GLASS_PANE, 64, (short) 5);
+            plus = new ItemStack(Material.STAINED_GLASS_PANE, 64, (short) 5);
             plusmeta.setDisplayName(instance.getLocale().getMessage("interface.shop.set64"));
             plus.setItemMeta(plusmeta);
             if (item.getAmount() != 64) {
                 inventory.setItem(25, plus);
             }
 
-            ItemStack minus = new ItemStack(Material.RED_STAINED_GLASS_PANE, 1, (short) 14);
+            ItemStack minus = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             ItemMeta minusmeta = minus.getItemMeta();
             minusmeta.setDisplayName(instance.getLocale().getMessage("interface.shop.remove1"));
             minus.setItemMeta(minusmeta);
@@ -259,14 +262,14 @@ public class Shop {
                 inventory.setItem(11, minus);
             }
 
-            minus = new ItemStack(Material.RED_STAINED_GLASS_PANE, 10, (short) 14);
+            minus = new ItemStack(Material.STAINED_GLASS_PANE, 10, (short) 14);
             minusmeta.setDisplayName(instance.getLocale().getMessage("interface.shop.remove10"));
             minus.setItemMeta(minusmeta);
             if (item.getAmount() - 10 >= 0) {
                 inventory.setItem(29, minus);
             }
 
-            minus = new ItemStack(Material.RED_STAINED_GLASS_PANE, 1, (short) 14);
+            minus = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             minusmeta.setDisplayName(instance.getLocale().getMessage("interface.shop.set1"));
             minus.setItemMeta(minusmeta);
             if (item.getAmount() != 1) {
@@ -279,7 +282,7 @@ public class Shop {
             exit.setItemMeta(exitmeta);
             inventory.setItem(8, exit);
 
-            ItemStack head2 = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack head2 = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemStack skull2 = Arconix.pl().getApi().getGUI().addTexture(head2, "http://textures.minecraft.net/texture/3ebf907494a935e955bfcadab81beafb90fb9be49c7026ba97d798d5f1a23");
             SkullMeta skull2Meta = (SkullMeta) skull2.getItemMeta();
             skull2.setDurability((short) 3);

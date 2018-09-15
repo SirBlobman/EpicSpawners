@@ -114,7 +114,7 @@ public class InventoryListeners implements Listener {
                         }
                     } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(instance.getLocale().getMessage("general.nametag.next"))) {
                         spawner.convertOverview(player, page + 1);
-                    } else if (clicked.getType() == Material.PLAYER_HEAD) {
+                    } else if (clicked.getType() == Material.SKULL_ITEM) {
                         spawner.convert(instance.getSpawnerDataFromItem(clicked), player);
                     }
                 }
@@ -131,8 +131,8 @@ public class InventoryListeners implements Listener {
                     else if (event.getSlot() == 11) {
                         if (!event.getClick().isLeftClick() && !event.getClick().isRightClick()) {
                             SpawnerData spawnerData = instance.getSpawnerEditor().getType(editingData.getSpawnerSlot());
-                            spawnerData.setDisplayItem(Material.valueOf(player.getInventory().getItemInMainHand().getType().toString()));
-                            player.sendMessage(TextComponent.formatText(instance.getReferences().getPrefix() + "&7Display Item for &6" + spawnerData.getIdentifyingName() + " &7set to &6" + player.getInventory().getItemInMainHand().getType().toString() + "&7."));
+                            spawnerData.setDisplayItem(Material.valueOf(player.getInventory().getItemInHand().getType().toString()));
+                            player.sendMessage(TextComponent.formatText(instance.getReferences().getPrefix() + "&7Display Item for &6" + spawnerData.getIdentifyingName() + " &7set to &6" + player.getInventory().getItemInHand().getType().toString() + "&7."));
                             instance.getSpawnerEditor().overview(player, editingData.getSpawnerSlot());
                         } else if (event.getClick().isLeftClick()) {
                             instance.getSpawnerEditor().editSpawnerName(player);
@@ -360,7 +360,7 @@ public class InventoryListeners implements Listener {
                     if (event.getAction() != InventoryAction.NOTHING) {
                         if (event.getCurrentItem().getType() != Material.AIR) {
                             ItemStack item = event.getCurrentItem();
-                            if (item.getType() == Material.SPAWNER) {
+                            if (item.getType() == Material.MOB_SPAWNER) {
                                 event.setCancelled(true);
                             }
                         }

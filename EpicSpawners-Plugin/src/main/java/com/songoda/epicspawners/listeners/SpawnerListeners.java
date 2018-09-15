@@ -7,6 +7,7 @@ import com.songoda.epicspawners.spawners.spawner.ESpawner;
 import com.songoda.epicspawners.spawners.spawner.ESpawnerStack;
 import com.songoda.epicspawners.utils.Debugger;
 import com.songoda.epicspawners.utils.Methods;
+import com.songoda.epicspawners.utils.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -34,11 +35,15 @@ public class SpawnerListeners implements Listener {
             if (entity.getVehicle() != null) {
                 entity.getVehicle().remove();
                 entity.remove();
-            } else if (entity.getPassengers().size() != 0) {
-                for (Entity e : entity.getPassengers()) {
-                    e.remove();
+            }
+
+            if (instance.isServerVersionAtLeast(ServerVersion.V1_9)) {
+                if (entity.getPassengers().size() != 0) {
+                    for (Entity e : entity.getPassengers()) {
+                        e.remove();
+                    }
+                    entity.remove();
                 }
-                entity.remove();
             }
 
             Location location = event.getSpawner().getLocation();

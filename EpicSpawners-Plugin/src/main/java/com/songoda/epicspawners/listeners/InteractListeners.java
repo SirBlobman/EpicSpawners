@@ -9,6 +9,7 @@ import com.songoda.epicspawners.spawners.spawner.ESpawner;
 import com.songoda.epicspawners.spawners.spawner.ESpawnerStack;
 import com.songoda.epicspawners.utils.Debugger;
 import com.songoda.epicspawners.utils.Methods;
+import com.songoda.epicspawners.utils.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -63,7 +64,7 @@ public class InteractListeners implements Listener {
                     for (int fy = -radius; fy <= radius; fy++) {
                         for (int fz = -radius; fz <= radius; fz++) {
                             Block b2 = e.getClickedBlock().getWorld().getBlockAt(bx + fx, by + fy, bz + fz);
-                            if (b2.getType().equals(Material.SPAWNER)) {
+                            if (b2.getType().equals(Material.MOB_SPAWNER)) {
                                 e.setCancelled(true);
                             }
                         }
@@ -73,9 +74,9 @@ public class InteractListeners implements Listener {
 
             if (is == null || is == Material.AIR) return;
 
-            if (e.getClickedBlock().getType() == Material.SPAWNER && is.toString().contains("SPAWN_EGG") && EpicSpawnersPlugin.getInstance().getBlacklistHandler().isBlacklisted(p, true))
+            if (e.getClickedBlock().getType() == Material.MOB_SPAWNER && is.toString().contains("SPAWN_EGG") && EpicSpawnersPlugin.getInstance().getBlacklistHandler().isBlacklisted(p, true))
                 e.setCancelled(true);
-            if (!(e.getClickedBlock().getType() == Material.SPAWNER && is.toString().contains("SPAWN_EGG") && !EpicSpawnersPlugin.getInstance().getBlacklistHandler().isBlacklisted(p, true))) {
+            if (!(e.getClickedBlock().getType() == Material.MOB_SPAWNER && is.toString().contains("SPAWN_EGG") && !EpicSpawnersPlugin.getInstance().getBlacklistHandler().isBlacklisted(p, true))) {
                 return;
             }
 
@@ -132,14 +133,17 @@ public class InteractListeners implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void PlayerInteractEvent(PlayerInteractEvent event) {
         try {
-            if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+
+            if (instance.isServerVersionAtLeast(ServerVersion.V1_9)) {
+                if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+            }
 
             Player player = event.getPlayer();
             Block block = event.getClickedBlock();
             Location location = block.getLocation();
             ItemStack item = event.getItem();
 
-            if (block.getType() == Material.SPAWNER) {
+            if (block.getType() == Material.MOB_SPAWNER) {
                 if (!instance.getSpawnerManager().isSpawner(location)) {
                     ESpawner spawner = new ESpawner(location);
 
@@ -160,7 +164,7 @@ public class InteractListeners implements Listener {
             }
             if (is != null && is.name().contains("SPAWN_EGG"))
                 return;
-            if (event.getClickedBlock().getType() == Material.SPAWNER && is == Material.SPAWNER && !EpicSpawnersPlugin.getInstance().getBlacklistHandler().isBlacklisted(player, true)) {
+            if (event.getClickedBlock().getType() == Material.MOB_SPAWNER && is == Material.MOB_SPAWNER && !EpicSpawnersPlugin.getInstance().getBlacklistHandler().isBlacklisted(player, true)) {
 
                 Spawner spawner = instance.getSpawnerManager().getSpawnerFromWorld(location);
                 if (!player.isSneaking() && item.getItemMeta().getDisplayName() != null) {
@@ -171,7 +175,7 @@ public class InteractListeners implements Listener {
                         event.setCancelled(true);
                     }
                 }
-            } else if (event.getClickedBlock().getType() == Material.SPAWNER && !EpicSpawnersPlugin.getInstance().getBlacklistHandler().isBlacklisted(player, false)) {
+            } else if (event.getClickedBlock().getType() == Material.MOB_SPAWNER && !EpicSpawnersPlugin.getInstance().getBlacklistHandler().isBlacklisted(player, false)) {
                 if (!player.isSneaking()) {
                     Spawner spawner = EpicSpawnersPlugin.getInstance().getSpawnerManager().getSpawnerFromWorld(location);
 

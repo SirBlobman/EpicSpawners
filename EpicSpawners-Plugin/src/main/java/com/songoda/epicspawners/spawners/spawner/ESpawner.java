@@ -17,6 +17,7 @@ import com.songoda.epicspawners.player.MenuType;
 import com.songoda.epicspawners.player.PlayerData;
 import com.songoda.epicspawners.utils.Debugger;
 import com.songoda.epicspawners.utils.Methods;
+import com.songoda.epicspawners.utils.ServerVersion;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.block.CreatureSpawner;
@@ -221,14 +222,14 @@ public class ESpawner implements Spawner {
             i.setItem(25, Methods.getBackgroundGlass(true));
             i.setItem(26, Methods.getBackgroundGlass(true));
 
-            ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemStack skull = Arconix.pl().getApi().getGUI().addTexture(head, "http://textures.minecraft.net/texture/1b6f1a25b6bc199946472aedb370522584ff6f4e83221e5946bd2e41b5ca13b");
             SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
             skull.setDurability((short) 3);
             skullMeta.setDisplayName(TextComponent.formatText("&6&l+1"));
             skull.setItemMeta(skullMeta);
 
-            ItemStack head2 = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack head2 = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemStack skull2 = Arconix.pl().getApi().getGUI().addTexture(head2, "http://textures.minecraft.net/texture/3ebf907494a935e955bfcadab81beafb90fb9be49c7026ba97d798d5f1a23");
             SkullMeta skull2Meta = (SkullMeta) skull2.getItemMeta();
             skull2.setDurability((short) 3);
@@ -381,7 +382,7 @@ public class ESpawner implements Spawner {
                     place++;
                 if (place == (max22 - 18))
                     place++;
-                ItemStack it = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+                ItemStack it = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 
                 ItemStack item = instance.getHeads().addTexture(it, spawnerData);
 
@@ -399,7 +400,9 @@ public class ESpawner implements Spawner {
                 lore.add(instance.getLocale().getMessage("interface.shop.buyprice", TextComponent.formatEconomy(price)));
                 String loreString = instance.getLocale().getMessage("interface.convert.lore", Methods.getTypeFromString(spawnerData.getIdentifyingName()));
                 if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-                    loreString = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, loreString.replace(" ", "_")).replace("_", " ");
+                    if (EpicSpawnersPlugin.getInstance().isServerVersionAtLeast(ServerVersion.V1_9)) {
+                        loreString = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, loreString.replace(" ", "_")).replace("_", " ");
+                    }
                 }
                 lore.add(loreString);
                 itemmeta.setLore(lore);
@@ -426,14 +429,14 @@ public class ESpawner implements Spawner {
             exitmeta.setDisplayName(instance.getLocale().getMessage("general.nametag.exit"));
             exit.setItemMeta(exitmeta);
 
-            ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemStack skull = Arconix.pl().getApi().getGUI().addTexture(head, "http://textures.minecraft.net/texture/1b6f1a25b6bc199946472aedb370522584ff6f4e83221e5946bd2e41b5ca13b");
             SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
             skull.setDurability((short) 3);
             skullMeta.setDisplayName(instance.getLocale().getMessage("general.nametag.next"));
             skull.setItemMeta(skullMeta);
 
-            ItemStack head2 = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack head2 = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemStack skull2 = Arconix.pl().getApi().getGUI().addTexture(head2, "http://textures.minecraft.net/texture/3ebf907494a935e955bfcadab81beafb90fb9be49c7026ba97d798d5f1a23");
             SkullMeta skull2Meta = (SkullMeta) skull2.getItemMeta();
             skull2.setDurability((short) 3);
@@ -574,7 +577,9 @@ public class ESpawner implements Spawner {
         }
 
         if (instance.getConfig().getBoolean("Main.Sounds Enabled")) {
-            player.playSound(player.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.6F, 15.0F);
+            if (EpicSpawnersPlugin.getInstance().isServerVersionAtLeast(ServerVersion.V1_9)) {
+                player.playSound(player.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 0.6F, 15.0F);
+            }
         }
         ItemStack item = stack.getSpawnerData().toItemStack(1, stackSize);
 
@@ -693,19 +698,21 @@ public class ESpawner implements Spawner {
             loc.setX(loc.getX() + .5);
             loc.setY(loc.getY() + .5);
             loc.setZ(loc.getZ() + .5);
-            player.getWorld().spawnParticle(org.bukkit.Particle.valueOf(EpicSpawnersPlugin.getInstance().getConfig().getString("Main.Upgrade Particle Type")), loc, 100, .5, .5, .5);
+            if (EpicSpawnersPlugin.getInstance().isServerVersionAtLeast(ServerVersion.V1_9)) {
+                player.getWorld().spawnParticle(org.bukkit.Particle.valueOf(EpicSpawnersPlugin.getInstance().getConfig().getString("Main.Upgrade Particle Type")), loc, 100, .5, .5, .5);
 
 
-            if (!EpicSpawnersPlugin.getInstance().getConfig().getBoolean("Main.Sounds Enabled")) {
-                return;
-            }
-            if (currentStackSize != EpicSpawnersPlugin.getInstance().getConfig().getInt("Main.Spawner Max Upgrade")) {
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.6F, 15.0F);
-            } else {
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 2F, 25.0F);
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 2F, 25.0F);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(EpicSpawnersPlugin.getInstance(), () -> player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.2F, 35.0F), 5L);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(EpicSpawnersPlugin.getInstance(), () -> player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.8F, 35.0F), 10L);
+                if (!EpicSpawnersPlugin.getInstance().getConfig().getBoolean("Main.Sounds Enabled")) {
+                    return;
+                }
+                if (currentStackSize != EpicSpawnersPlugin.getInstance().getConfig().getInt("Main.Spawner Max Upgrade")) {
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.6F, 15.0F);
+                } else {
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 2F, 25.0F);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_CHIME, 2F, 25.0F);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(EpicSpawnersPlugin.getInstance(), () -> player.playSound(player.getLocation(), Sound.BLOCK_NOTE_CHIME, 1.2F, 35.0F), 5L);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(EpicSpawnersPlugin.getInstance(), () -> player.playSound(player.getLocation(), Sound.BLOCK_NOTE_CHIME, 1.8F, 35.0F), 10L);
+                }
             }
             EpicSpawnersPlugin.getInstance().getHologramHandler().updateHologram(this);
         } catch (Exception e) {

@@ -76,20 +76,20 @@ public class SpawnerEditor {
                 max2 = 45;
             }
 
-            ItemStack exit = new ItemStack(Material.OAK_DOOR, 1);
+            ItemStack exit = new ItemStack(Material.WOOD_DOOR, 1);
             ItemMeta exitMeta = exit.getItemMeta();
             exitMeta.setDisplayName(instance.getLocale().getMessage("general.nametag.exit"));
             exit.setItemMeta(exitMeta);
             inventory.setItem(8, exit);
 
-            ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemStack skull = Arconix.pl().getApi().getGUI().addTexture(head, "http://textures.minecraft.net/texture/1b6f1a25b6bc199946472aedb370522584ff6f4e83221e5946bd2e41b5ca13b");
             SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
             skull.setDurability((short) 3);
             skullMeta.setDisplayName(instance.getLocale().getMessage("general.nametag.next"));
             skull.setItemMeta(skullMeta);
 
-            ItemStack head2 = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack head2 = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemStack skull2 = Arconix.pl().getApi().getGUI().addTexture(head2, "http://textures.minecraft.net/texture/3ebf907494a935e955bfcadab81beafb90fb9be49c7026ba97d798d5f1a23");
             SkullMeta skull2Meta = (SkullMeta) skull2.getItemMeta();
             skull2.setDurability((short) 3);
@@ -104,7 +104,7 @@ public class SpawnerEditor {
             for (SpawnerData spawnerData : entities) {
                 if (place == 17 || place == (max22 - 18)) place++;
 
-                ItemStack it = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+                ItemStack it = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
                 ItemStack item = EpicSpawnersPlugin.getInstance().getHeads().addTexture(it, spawnerData);
                 if (spawnerData.getDisplayItem() != null) {
                     item.setType(spawnerData.getDisplayItem());
@@ -253,7 +253,7 @@ public class SpawnerEditor {
             i.setItem(53, Methods.getBackgroundGlass(false));
 
 
-            ItemStack head2 = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack head2 = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemStack skull2 = Arconix.pl().getApi().getGUI().addTexture(head2, "http://textures.minecraft.net/texture/3ebf907494a935e955bfcadab81beafb90fb9be49c7026ba97d798d5f1a23");
             SkullMeta skull2Meta = (SkullMeta) skull2.getItemMeta();
             skull2.setDurability((short) 3);
@@ -262,7 +262,7 @@ public class SpawnerEditor {
 
             i.setItem(8, skull2);
 
-            ItemStack it = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack it = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 
             ItemStack item = instance.getHeads().addTexture(it, spawnerData);
             if (spawnerData.getDisplayItem() != null) {
@@ -328,7 +328,7 @@ public class SpawnerEditor {
             settings.setItemMeta(settingsmeta);
             i.setItem(24, settings);
 
-            ItemStack it2 = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack it2 = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 
             ItemStack entity = EpicSpawnersPlugin.getInstance().getHeads().addTexture(it2, instance.getSpawnerManager().getSpawnerData("omni"));
             ItemMeta entitymeta = entity.getItemMeta();
@@ -348,7 +348,7 @@ public class SpawnerEditor {
             item3.setItemMeta(item3meta);
             i.setItem(32, item3);
 
-            ItemStack item4 = new ItemStack(Material.FIREWORK_ROCKET);
+            ItemStack item4 = new ItemStack(Material.FIREWORK);
             ItemMeta item4meta = item4.getItemMeta();
             item4meta.setDisplayName(TextComponent.formatText("&b&lParticle Settings"));
             item4.setItemMeta(item4meta);
@@ -402,7 +402,7 @@ public class SpawnerEditor {
             num++;
         }
 
-        ItemStack head2 = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+        ItemStack head2 = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
         ItemStack skull2 = Arconix.pl().getApi().getGUI().addTexture(head2, "http://textures.minecraft.net/texture/3ebf907494a935e955bfcadab81beafb90fb9be49c7026ba97d798d5f1a23");
         SkullMeta skull2Meta = (SkullMeta) skull2.getItemMeta();
         skull2.setDurability((short) 3);
@@ -446,7 +446,7 @@ public class SpawnerEditor {
         item2.setItemMeta(item2meta);
         i.setItem(20, item2);
 
-        item2 = new ItemStack(Material.FIREWORK_ROCKET);
+        item2 = new ItemStack(Material.FIREWORK);
         item2meta = item2.getItemMeta();
         item2meta.setDisplayName(TextComponent.formatText("&6&lSpawner Effect"));
         lore = new ArrayList<>();
@@ -458,7 +458,7 @@ public class SpawnerEditor {
         item2.setItemMeta(item2meta);
         i.setItem(22, item2);
 
-        item2 = new ItemStack(Material.COMPARATOR);
+        item2 = new ItemStack(Material.REDSTONE_COMPARATOR);
         item2meta = item2.getItemMeta();
         item2meta.setDisplayName(TextComponent.formatText("&6&lPerformance"));
         lore = new ArrayList<>();
@@ -498,7 +498,7 @@ public class SpawnerEditor {
                 } else if (spawnerData.getBlocks().size() >= spot + 1 && editingMenu == EditingMenu.BLOCK) {
                     i.setItem(num, new ItemStack(spawnerData.getBlocks().get(spot)));
                 } else if (spawnerData.getEntities().size() >= spot + 1 && editingMenu == EditingMenu.ENTITY && spawnerData.getEntities().get(spot) != EntityType.GIANT) {
-                    ItemStack it = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+                    ItemStack it = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
                     ItemStack item = EpicSpawnersPlugin.getInstance().getHeads().addTexture(it,
                             instance.getSpawnerManager().getSpawnerData(spawnerData.getEntities().get(spot)));
                     ItemMeta meta = item.getItemMeta();
@@ -540,7 +540,7 @@ public class SpawnerEditor {
             i.setItem(52, Methods.getBackgroundGlass(true));
             i.setItem(53, Methods.getBackgroundGlass(true));
 
-            ItemStack head2 = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack head2 = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemStack skull2 = Arconix.pl().getApi().getGUI().addTexture(head2, "http://textures.minecraft.net/texture/3ebf907494a935e955bfcadab81beafb90fb9be49c7026ba97d798d5f1a23");
             SkullMeta skull2Meta = (SkullMeta) skull2.getItemMeta();
             skull2.setDurability((short) 3);
@@ -551,7 +551,7 @@ public class SpawnerEditor {
 
             if (editingMenu == EditingMenu.DROPS || editingMenu == EditingMenu.ITEM || editingMenu == EditingMenu.COMMAND || editingMenu == EditingMenu.BLOCK) {
                 if (editingMenu == EditingMenu.COMMAND) {
-                    ItemStack item = new ItemStack(Material.CLOCK);
+                    ItemStack item = new ItemStack(Material.WATCH);
                     ItemMeta meta = item.getItemMeta();
                     meta.setDisplayName(TextComponent.formatText("&bSpawn Limit"));
                     ArrayList<String> lore = new ArrayList<>();
@@ -573,7 +573,7 @@ public class SpawnerEditor {
                     add = new ItemStack(Material.PAPER);
                     addName = "&6Add Command";
                 } else {
-                    add = new ItemStack(Material.SHEEP_SPAWN_EGG);
+                    add = new ItemStack(Material.MONSTER_EGG);
                     addName = "&6Add entity";
                 }
                 ItemMeta addmeta = add.getItemMeta();
@@ -611,7 +611,7 @@ public class SpawnerEditor {
                 num++;
             }
 
-            ItemStack head2 = new ItemStack(Material.PLAYER_HEAD, 1, (byte) 3);
+            ItemStack head2 = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemStack skull2 = Arconix.pl().getApi().getGUI().addTexture(head2, "http://textures.minecraft.net/texture/3ebf907494a935e955bfcadab81beafb90fb9be49c7026ba97d798d5f1a23");
             SkullMeta skull2Meta = (SkullMeta) skull2.getItemMeta();
             skull2.setDurability((short) 3);
@@ -641,7 +641,7 @@ public class SpawnerEditor {
             i.setItem(44, Methods.getBackgroundGlass(true));
 
 
-            ItemStack item2 = new ItemStack(Material.SUNFLOWER);
+            ItemStack item2 = new ItemStack(Material.DOUBLE_PLANT);
             ItemMeta item2meta = item2.getItemMeta();
             item2meta.setDisplayName(TextComponent.formatText("&6&lShop Price"));
 
@@ -667,7 +667,7 @@ public class SpawnerEditor {
             item2.setItemMeta(item2meta);
             i.setItem(20, item2);
 
-            item2 = new ItemStack(Material.FIRE_CHARGE);
+            item2 = new ItemStack(Material.FIREWORK_CHARGE);
             item2meta = item2.getItemMeta();
             item2meta.setDisplayName(TextComponent.formatText("&c&lSpawn On Fire"));
             lore = new ArrayList<>();
@@ -692,7 +692,7 @@ public class SpawnerEditor {
             item2.setItemMeta(item2meta);
             i.setItem(13, item2);
 
-            item2 = new ItemStack(Material.SUNFLOWER);
+            item2 = new ItemStack(Material.DOUBLE_PLANT);
             item2meta = item2.getItemMeta();
             item2meta.setDisplayName(TextComponent.formatText("&6&lCustom ECO cost"));
             lore = new ArrayList<>();
@@ -704,7 +704,7 @@ public class SpawnerEditor {
             item2.setItemMeta(item2meta);
             i.setItem(24, item2);
 
-            item2 = new ItemStack(Material.EXPERIENCE_BOTTLE);
+            item2 = new ItemStack(Material.EXP_BOTTLE);
             item2meta = item2.getItemMeta();
             item2meta.setDisplayName(TextComponent.formatText("&5&lCustom XP cost"));
             lore = new ArrayList<>();
@@ -716,7 +716,7 @@ public class SpawnerEditor {
             item2.setItemMeta(item2meta);
             i.setItem(25, item2);
 
-            item2 = new ItemStack(Material.SUNFLOWER);
+            item2 = new ItemStack(Material.DOUBLE_PLANT);
             item2meta = item2.getItemMeta();
             item2meta.setDisplayName(TextComponent.formatText("&5&lCustom Goal"));
             lore = new ArrayList<>();
@@ -742,7 +742,7 @@ public class SpawnerEditor {
             item2.setItemMeta(item2meta);
             i.setItem(32, item2);
 
-            item2 = new ItemStack(Material.CLOCK);
+            item2 = new ItemStack(Material.WATCH);
             item2meta = item2.getItemMeta();
             item2meta.setDisplayName(TextComponent.formatText("&6&lTick Rate"));
             lore = new ArrayList<>();

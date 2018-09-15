@@ -9,6 +9,7 @@ import com.songoda.epicspawners.api.spawner.condition.SpawnCondition;
 import com.songoda.epicspawners.spawners.condition.SpawnConditionNearbyEntities;
 import com.songoda.epicspawners.utils.Debugger;
 import com.songoda.epicspawners.utils.Methods;
+import com.songoda.epicspawners.utils.ServerVersion;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -60,8 +61,11 @@ public class SpawnOptionEntity implements SpawnOption {
 
         if (nmsSpawnMethod == null) {
             try {
-                nmsSpawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, Consumer.class, CreatureSpawnEvent.SpawnReason.class);
-            } catch (ReflectiveOperationException e) {
+                if (instance.isServerVersionAtLeast(ServerVersion.V1_11)) {
+                    nmsSpawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, Consumer.class, CreatureSpawnEvent.SpawnReason.class);
+                } else {
+                    nmsSpawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
+                }            } catch (ReflectiveOperationException e) {
                 e.printStackTrace();
                 return;
             }
@@ -171,7 +175,7 @@ public class SpawnOptionEntity implements SpawnOption {
                 for (Material material : spawnBlocks) {
                     Location loc = location.clone().subtract(0, 1, 0);
                     if (loc.getBlock().getType().toString().equalsIgnoreCase(material.name())
-                            || (material.toString().equals("GRASS") && loc.getBlock().getType() == Material.GRASS_BLOCK)
+                            || (material.toString().equals("GRASS") && loc.getBlock().getType() == Material.GRASS)
                             || isWater(loc.getBlock().getType()) && spawnBlocks.contains("WATER")) {
                         return true;
                     }

@@ -29,7 +29,7 @@ public class CommandChange extends AbstractCommand {
         Player p = (Player) sender;
         Block b = p.getTargetBlock(null, 200);
 
-        if (b.getType() != Material.SPAWNER) {
+        if (b.getType() != Material.MOB_SPAWNER) {
             sender.sendMessage(TextComponent.formatText(instance.getReferences().getPrefix() + "&cThis is not a spawner."));
             return false;
         }
