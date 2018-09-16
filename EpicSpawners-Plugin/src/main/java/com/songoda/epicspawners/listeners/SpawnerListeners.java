@@ -45,6 +45,7 @@ public class SpawnerListeners implements Listener {
                     entity.remove();
                 }
             }
+            entity.remove();
 
             Location location = event.getSpawner().getLocation();
 
@@ -54,7 +55,6 @@ public class SpawnerListeners implements Listener {
                 SpawnerData spawnerData = instance.getSpawnerManager().getSpawnerData(Methods.getTypeFromString(event.getEntityType().name()));
                 spawner.addSpawnerStack(new ESpawnerStack(spawnerData, 1));
             }
-            event.getSpawner().setDelay(20);
         } catch (Exception ex) {
             Debugger.runReport(ex);
         }
@@ -64,10 +64,8 @@ public class SpawnerListeners implements Listener {
     public void onTarget(EntityTargetLivingEntityEvent event) {
         try {
             if (EpicSpawnersPlugin.getInstance().getConfig().getBoolean("entity.Hostile Mobs Attack Second")) {
-                if (event.getEntity().getLastDamageCause() != null) {
-                    if (event.getEntity().getLastDamageCause().getCause().name().equals("ENTITY_ATTACK")) {
-                        return;
-                    }
+                if (event.getEntity().getLastDamageCause() != null && event.getEntity().getLastDamageCause().getCause().name().equals("ENTITY_ATTACK")) {
+                    return;
                 }
                 event.setCancelled(true);
             }
