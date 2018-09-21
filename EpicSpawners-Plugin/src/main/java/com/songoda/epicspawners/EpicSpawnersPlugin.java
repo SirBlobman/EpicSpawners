@@ -104,7 +104,7 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
     }
 
     private boolean checkVersion() {
-        int maxVersion = 122; // also supports 1.8 and higher
+        int maxVersion = 12; // also supports 1.8 and higher
         int currentVersion = Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].split("_")[1]);
 
         if (currentVersion > maxVersion) {

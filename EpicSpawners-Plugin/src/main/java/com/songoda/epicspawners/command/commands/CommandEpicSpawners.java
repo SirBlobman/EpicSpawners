@@ -5,6 +5,9 @@ import com.songoda.epicspawners.EpicSpawnersPlugin;
 import com.songoda.epicspawners.command.AbstractCommand;
 import org.bukkit.command.CommandSender;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class CommandEpicSpawners extends AbstractCommand {
 
     public CommandEpicSpawners() {
@@ -14,12 +17,11 @@ public class CommandEpicSpawners extends AbstractCommand {
     @Override
     protected ReturnType runCommand(EpicSpawnersPlugin instance, CommandSender sender, String... args) {
         sender.sendMessage("");
-        sender.sendMessage(TextComponent.formatText("&f>>&m------------&6&l EpicSpawners Help &f&m------------&f<<"));
-        sender.sendMessage(TextComponent.formatText("              &7Version " + instance.getDescription().getVersion() + " Created by &5&l&oBrianna"));
+        sender.sendMessage(TextComponent.formatText(instance.getReferences().getPrefix() + "&7Version " + instance.getDescription().getVersion() + " Created with <3 by &5&l&oBrianna"));
 
         for (AbstractCommand command : instance.getCommandManager().getCommands()) {
             if (command.getPermissionNode() == null || sender.hasPermission(command.getPermissionNode())) {
-                sender.sendMessage(TextComponent.formatText("&6" + command.getSyntax() + "&7 - " + command.getDescription()));
+                sender.sendMessage(TextComponent.formatText("&8 - &a" + command.getSyntax() + "&7 - " + command.getDescription()));
             }
         }
         sender.sendMessage("");

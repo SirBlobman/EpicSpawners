@@ -29,13 +29,13 @@ public class CommandManager implements CommandExecutor {
         AbstractCommand commandEpicSpawners = addCommand(new CommandEpicSpawners());
 
         addCommand(new CommandReload(commandEpicSpawners));
-        addCommand(new CommandEditor(commandEpicSpawners));
-        addCommand(new CommandGive(commandEpicSpawners));
-        addCommand(new CommandChange(commandEpicSpawners));
-        addCommand(new CommandBoost(commandEpicSpawners));
-        addCommand(new CommandSettings(commandEpicSpawners));
         addCommand(new CommandSpawnerShop());
         addCommand(new CommandSpawnerStats());
+        addCommand(new CommandSettings(commandEpicSpawners));
+        addCommand(new CommandEditor(commandEpicSpawners));
+        addCommand(new CommandChange(commandEpicSpawners));
+        addCommand(new CommandBoost(commandEpicSpawners));
+        addCommand(new CommandGive(commandEpicSpawners));
     }
 
     private AbstractCommand addCommand(AbstractCommand abstractCommand) {

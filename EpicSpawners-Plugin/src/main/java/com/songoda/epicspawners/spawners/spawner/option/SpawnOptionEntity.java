@@ -202,7 +202,12 @@ public class SpawnOptionEntity implements SpawnOption {
         World world = location.getWorld();
 
         try {
-            Entity entity = (Entity) nmsSpawnMethod.invoke(world, location, type.getEntityClass(), null, CreatureSpawnEvent.SpawnReason.SPAWNER); //ToDo: account for all mobs in the spawner.
+            Entity entity;
+
+            if (instance.isServerVersionAtLeast(ServerVersion.V1_11))
+                entity = (Entity) nmsSpawnMethod.invoke(world, location, type.getEntityClass(), null, CreatureSpawnEvent.SpawnReason.SPAWNER); //ToDo: account for all mobs in the spawner.
+            else
+                entity = (Entity) nmsSpawnMethod.invoke(world, location, type.getEntityClass(), CreatureSpawnEvent.SpawnReason.SPAWNER);
 
             if (data.isSpawnOnFire())
                 entity.setFireTicks(160);
