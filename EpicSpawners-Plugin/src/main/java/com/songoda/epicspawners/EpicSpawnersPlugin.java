@@ -101,6 +101,7 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
 
     private ServerVersion serverVersion = ServerVersion.fromPackageName(Bukkit.getServer().getClass().getPackage().getName());
     private Storage storage;
+
     public static EpicSpawnersPlugin getInstance() {
         return INSTANCE;
     }
@@ -521,6 +522,7 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
     public boolean isServerVersion(ServerVersion version) {
         return serverVersion == version;
     }
+
     public boolean isServerVersion(ServerVersion... versions) {
         return ArrayUtils.contains(versions, serverVersion);
     }
