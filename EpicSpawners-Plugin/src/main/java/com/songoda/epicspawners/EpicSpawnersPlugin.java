@@ -172,9 +172,10 @@ public class EpicSpawnersPlugin extends JavaPlugin implements EpicSpawners {
                     try {
                         Location location = Serialize.getInstance().unserializeLocation(row.getKey());
 
-                    if (location.getWorld() == null || location.getBlock().getType() != Material.MOB_SPAWNER) {
-                        if (location.getWorld() != null && location.getBlock().getType() != Material.MOB_SPAWNER) {
-                            this.hologramHandler.despawn(location.getBlock());
+                        if (location.getWorld() == null || location.getBlock().getType() != Material.MOB_SPAWNER) {
+                            if (location.getWorld() != null && location.getBlock().getType() != Material.MOB_SPAWNER) {
+                                this.hologramHandler.despawn(location.getBlock());
+                            }
                         }
 
                         ESpawner spawner = new ESpawner(location);
